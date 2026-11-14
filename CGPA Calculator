@@ -1,0 +1,58 @@
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+    int semesters, courses;
+    float grade, credit;
+    float totalCredits = 0, totalPoints = 0;
+
+    cout << "Enter number of semesters: ";
+    cin >> semesters;
+
+    for (int i = 1; i <= semesters; i++)
+    {
+        float semCredits = 0, semPoints = 0;
+
+        cout << "\nSemester " << i << endl;
+
+        cout << "Enter number of courses: ";
+        cin >> courses;
+
+        for (int j = 1; j <= courses; j++)
+        {
+            cout << "\nEnter grade for course " << j << ": ";
+            cin >> grade;
+
+            cout << "Enter credit hours: ";
+            cin >> credit;
+
+            if (grade < 0 || grade > 10 || credit <= 0)
+            {
+                cout << "Invalid input!" << endl;
+                return 0;
+            }
+
+            semCredits = semCredits + credit;
+            semPoints = semPoints + (grade * credit);
+        }
+
+        float gpa = semPoints / semCredits;
+
+        cout << fixed << setprecision(2);
+        cout << "\nGPA of semester " << i << " = " << gpa << endl;
+
+        totalCredits = totalCredits + semCredits;
+        totalPoints = totalPoints + semPoints;
+    }
+
+    float cgpa = totalPoints / totalCredits;
+
+    cout << "\nTotal Credits = " << totalCredits;
+    cout << "\nTotal Grade Points = " << totalPoints;
+    cout << "\nOverall CGPA = " << cgpa << endl;
+
+    return 0;
+}
