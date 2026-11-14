@@ -1,0 +1,126 @@
+
+#include <iostream>
+using namespace std;
+
+int grid[9][9];
+
+// Check whether a number can be placed
+bool check(int row, int col, int num)
+{
+    // Check row
+    for (int i = 0; i < 9; i++)
+    {
+        if (grid[row][i] == num)
+            return false;
+    }
+
+    // Check column
+    for (int i = 0; i < 9; i++)
+    {
+        if (grid[i][col] == num)
+            return false;
+    }
+
+    // Check 3x3 box
+    int r = row - row % 3;
+    int c = col - col % 3;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (grid[r + i][c + j] == num)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+// Solve the Sudoku
+bool solve()
+{
+    int row = -1, col = -1;
+    bool empty = false;
+
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (grid[i][j] == 0)
+            {
+                row = i;
+                col = j;
+                empty = true;
+                break;
+            }
+        }
+
+        if (empty)
+            break;
+    }
+
+    if (!empty)
+        return true;
+
+    for (int num = 1; num <= 9; num++)
+    {
+        if (check(row, col, num))
+        {
+            grid[row][col] = num;
+
+            if (solve())
+                return true;
+
+            grid[row][col] = 0;
+        }
+    }
+
+    return false;
+}
+
+// Display the Sudoku
+void display()
+{
+    cout << "\nSolved Sudoku:\n";
+
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            cout << grid[i][j] << " ";
+        }
+
+        cout << endl;
+    }
+}
+
+int main()
+{
+    cout << "Enter Sudoku (use 0 for empty places):\n";
+
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            cin >> grid[i][j];
+
+            if (grid[i][j] < 0 || grid[i][j] > 9)
+            {
+                cout << "Invalid input!" << endl;
+                return 0;
+            }
+        }
+    }
+
+    if (solve())
+    {
+        display();
+    }
+    else
+    {
+        cout << "\nSudoku cannot be solved!" << endl;
+    }
+
+    return 0;
+}
